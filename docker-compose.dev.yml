@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  # ============================================
+  # PostgreSQL Database (Development)
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: prueba-backend-postgres-dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: prueba_backend
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    networks:
+      - backend-network-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # NestJS Application (Development with hot-reload)
+  # ============================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: prueba-backend-app-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "9229:9229" # Debug port
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/prueba_backend?schema=public
+      API_PREFIX: api/v1
+      JWT_SECRET: dev-secret-change-in-production
+      JWT_EXPIRATION: 7d
+      CORS_ORIGIN: http://localhost:3000,http://localhost:5173
+      SWAGGER_ENABLED: "true"
+      SWAGGER_PATH: api/docs
+      LOG_LEVEL: debug
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend-network-dev
+    command: npm run start:dev
+
+  # ============================================
+  # pgAdmin (Development)
+  # ============================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: prueba-backend-pgadmin-dev
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin_data_dev:/var/lib/pgadmin
+    networks:
+      - backend-network-dev
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data_dev:
+    driver: local
+  pgadmin_data_dev:
+    driver: local
+
+networks:
+  backend-network-dev:
+    driver: bridge

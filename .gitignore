@@ -1,6 +1,9 @@
-# compiled output
-/dist
+# Dependencies
 /node_modules
+
+# Compiled output
+/dist
+/build
 
 # Logs
 logs
@@ -18,22 +21,6 @@ lerna-debug.log*
 /coverage
 /.nyc_output
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
 # Environment variables
 .env
 .env.local
@@ -41,10 +28,29 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 
+# IDE
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 # Prisma
 prisma/*.db
 prisma/*.db-journal
 
 # Docker
 docker-compose.override.yml
-/generated/prisma
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl

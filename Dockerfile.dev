@@ -1,0 +1,30 @@
+FROM node:20-alpine
+
+# Instalar dependencias del sistema
+RUN apk add --no-cache libc6-compat openssl curl
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Instalar dependencias
+RUN npm install
+
+# Generar Prisma Client
+RUN npx prisma generate
+
+# Copiar código fuente
+COPY . .
+
+# Exponer puerto
+EXPOSE 3000 9229
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Comando de inicio (hot-reload)
+CMD ["npm", "run", "start:dev"]

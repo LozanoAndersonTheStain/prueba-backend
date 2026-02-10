@@ -25,7 +25,13 @@
     "prisma:seed": "ts-node prisma/seed.ts",
     "prisma:reset": "prisma migrate reset",
     "db:push": "prisma db push",
-    "db:seed": "npm run prisma:seed"
+    "db:seed": "npm run prisma:seed",
+    "docker:build": "docker build -t prueba-backend:latest .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env prueba-backend:latest",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up -d",
+    "docker:prod:build": "docker-compose -f docker-compose.prod.yml up -d --build",
+    "docker:prod:down": "docker-compose -f docker-compose.prod.yml down",
+    "docker:prod:logs": "docker-compose -f docker-compose.prod.yml logs -f app"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",

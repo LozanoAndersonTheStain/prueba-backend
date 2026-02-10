@@ -159,6 +159,23 @@ async function bootstrap() {
   logger.log(`   PATCH  /${apiPrefix}/productos/:id      - Update product`);
   logger.log(`   DELETE /${apiPrefix}/productos/:id      - Delete product`);
   logger.log(`   GET    /${apiPrefix}/productos/stats    - Get statistics`);
+  logger.log('');
+  logger.log('Health checks:');
+  logger.log(
+    `   GET    /${apiPrefix}/health                          - Full health check`,
+  );
+  logger.log(
+    `   GET    /${apiPrefix}/health/database                 - Database check`,
+  );
+  logger.log(
+    `   GET    /${apiPrefix}/health/memory                   - Memory check`,
+  );
+  logger.log(
+    `   GET    /${apiPrefix}/health/ready                    - Readiness probe`,
+  );
+  logger.log(
+    `   GET    /${apiPrefix}/health/live                     - Liveness probe`,
+  );
   logger.log('===========================================');
 }
 

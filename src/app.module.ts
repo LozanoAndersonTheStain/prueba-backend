@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductosModule } from './modules/productos/productos.module';
+import { HealthModule } from './modules/health/health.module';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { validationSchema } from './config/validation.schema';
@@ -33,6 +34,7 @@ import { validationSchema } from './config/validation.schema';
     // Módulos de la aplicación
     PrismaModule, // Base de datos (Global)
     ProductosModule, // CRUD de productos
+    HealthModule, // Health checks y monitoring
   ],
   controllers: [AppController],
   providers: [AppService],

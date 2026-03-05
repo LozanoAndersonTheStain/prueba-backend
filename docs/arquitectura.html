@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Arquitectura - Prueba Backend</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f9f9f9; }
+    h1 { color: #2c3e50; }
+    .diagram { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 2rem; margin: 2rem 0; }
+    pre { background: #f4f4f4; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    .legend { font-size: 0.95em; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Arquitectura Visual - Prueba Backend</h1>
+  <div class="diagram">
+    <pre>
+┌──────────────┐      HTTP Request      ┌──────────────┐
+│   Cliente    │ ────────────────────▶ │  Controller  │
+└──────────────┘                       └──────────────┘
+                                         │
+                                         ▼
+                                 ┌──────────────┐
+                                 │   Service    │
+                                 └──────────────┘
+                                         │
+                                         ▼
+                                 ┌──────────────┐
+                                 │ PrismaService│
+                                 └──────────────┘
+                                         │
+                                         ▼
+                                 ┌──────────────┐
+                                 │ PostgreSQL DB│
+                                 └──────────────┘
+    </pre>
+    <div class="legend">
+      <strong>Flujo:</strong> Cliente (Swagger, Postman, Frontend) &rarr; Controller &rarr; Service &rarr; PrismaService &rarr; PostgreSQL<br>
+      <strong>Respuesta:</strong> El flujo es inverso, la respuesta sube por los mismos componentes.<br>
+      <strong>Swagger:</strong> Disponible en <code>/api/docs</code> para probar la API.<br>
+      <strong>Filtros de error:</strong> Capturan y formatean errores en cualquier punto del flujo.<br>
+      <strong>Tests:</strong> Unitarios y E2E validan cada capa.
+    </div>
+  </div>
+  <h2>Descripción de Componentes</h2>
+  <ul>
+    <li><b>Controller:</b> Recibe la petición HTTP y delega al Service.</li>
+    <li><b>Service:</b> Lógica de negocio, validaciones y llamadas a la base de datos.</li>
+    <li><b>PrismaService:</b> ORM que traduce las operaciones a SQL y consulta PostgreSQL.</li>
+    <li><b>PostgreSQL:</b> Base de datos relacional donde se almacenan los datos.</li>
+    <li><b>Swagger:</b> Interfaz visual para probar la API.</li>
+    <li><b>Filtros de error:</b> Manejan y formatean errores globalmente.</li>
+  </ul>
+  <h2>¿Cómo probar?</h2>
+  <ol>
+    <li>Abre <code>/api/docs</code> en tu navegador.</li>
+    <li>Prueba los endpoints disponibles.</li>
+    <li>Observa el flujo en los logs de la aplicación.</li>
+  </ol>
+</body>
+</html>
